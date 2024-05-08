@@ -12,8 +12,8 @@ public class MemberDto {
     private String name;
     private String phone;
     private String carNumber;
-    //멤버십 번호를 스트링으로 하면 정렬이 이상하게 되어서 인트로 바꿨습니다
     private int membershipNum;
+    //멤버십 번호를 스트링으로 하면 정렬이 이상하게 되어서 인트로 바꿨습니다
     private LocalDateTime membershipStart;
     private LocalDateTime membershipEnd;
 }
