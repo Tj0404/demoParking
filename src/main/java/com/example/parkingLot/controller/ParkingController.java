@@ -5,6 +5,7 @@ import com.example.parkingLot.service.PaginationService;
 import com.example.parkingLot.service.ParkingService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -48,20 +49,54 @@ public class ParkingController {
     @GetMapping("paging/search")
     public String search(@RequestParam("keyword")String keyword,
                          @RequestParam("searchType")String type,
-                         Model model){
+                         Model model,
+                         @PageableDefault(page = 0, size = 10, sort = "membershipNum",
+                         direction = Sort.Direction.DESC) Pageable pageable){
+
         if(type.equals("name")){
-            List<Member> searchList = parkingService.searchByName(keyword);
+            //받아온 키워드 포함 이름 검색
+            Page<Member> searchList = parkingService.searchByName(keyword, pageable);
+
+            //페이지 블럭 처리
+            int totalPage = searchList.getTotalPages();
+            List<Integer> barNumbers = paginationService.getPaginationBarNumbers(
+                    pageable.getPageNumber(), totalPage);
+
+            model.addAttribute("paginationBarNumbers", barNumbers);
             model.addAttribute("searchList", searchList);
-            log.info(searchList.toString());
+            //서칭+페이징을 위해 받아온 키워드와 검색타입도 넘김
+            model.addAttribute("keyword", keyword);
+            model.addAttribute("searchType", type);
         } else if (type.equals("phone")) {
-            List<Member> searchList = parkingService.searchByPhone(keyword);
+            //받아온 키워드 포함 번호 검색
+            Page<Member> searchList = parkingService.searchByPhone(keyword, pageable);
+
+            //페이지 블럭 처리
+            int totalPage = searchList.getTotalPages();
+            List<Integer> barNumbers = paginationService.getPaginationBarNumbers(
+                    pageable.getPageNumber(), totalPage);
+
+            model.addAttribute("paginationBarNumbers", barNumbers);
             model.addAttribute("searchList", searchList);
+            //서칭+페이징을 위해 받아온 키워드와 검색타입도 넘김
+            model.addAttribute("keyword", keyword);
+            model.addAttribute("searchType", type);
         }else {
-            List<Member> searchList = parkingService.searchByCarNumber(keyword);
+            //받아온 키워드 포함 차 번호 검색
+            Page<Member> searchList = parkingService.searchByCarNumber(keyword, pageable);
+
+            //페이지 블럭 처리
+            int totalPage = searchList.getTotalPages();
+            List<Integer> barNumbers = paginationService.getPaginationBarNumbers(
+                    pageable.getPageNumber(), totalPage);
+
+            model.addAttribute("paginationBarNumbers", barNumbers);
             model.addAttribute("searchList", searchList);
+            //서칭+페이징을 위해 받아온 키워드와 검색타입도 넘김
+            model.addAttribute("keyword", keyword);
+            model.addAttribute("searchType", type);
         }
         return "views/search_view";
     }
-
 
 }

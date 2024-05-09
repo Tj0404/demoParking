@@ -22,20 +22,20 @@ public class ParkingService {
     }
 
     @Transactional
-    public List<Member> searchByName(String keyword){
-        List<Member> nameList = memberRepository.findByNameContains(keyword);
+    public Page<Member> searchByName(String keyword, Pageable pageable){
+        Page<Member> nameList = memberRepository.findByNameContains(keyword, pageable);
         return nameList;
     }
 
     @Transactional
-    public List<Member> searchByPhone(String keyword){
-        List<Member> phoneList = memberRepository.findByPhoneContains(keyword);
+    public Page<Member> searchByPhone(String keyword, Pageable pageable){
+        Page<Member> phoneList = memberRepository.findByPhoneContains(keyword, pageable);
         return phoneList;
     }
 
     @Transactional
-    public List<Member> searchByCarNumber(String keyword){
-        List<Member> carNumberList = memberRepository.findByCarNumberContains(keyword);
+    public Page<Member> searchByCarNumber(String keyword, Pageable pageable){
+        Page<Member> carNumberList = memberRepository.findByCarNumberContains(keyword, pageable);
         return carNumberList;
     }
 }

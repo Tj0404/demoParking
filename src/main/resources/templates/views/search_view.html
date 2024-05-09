@@ -33,6 +33,28 @@
         </tr>
     </table>
 
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item" th:classappend="${searchList.number} <= 0? 'disabled'">
+                <a class="page-link"
+                   th:href="@{?searchType={searchType}&keyword={keyword}(page=${searchList.number - 1},searchType=${searchType},keyword=${keyword})}">
+                    Previous
+                </a>
+            </li>
+            <th:block th:each="pageNumber : ${paginationBarNumbers}">
+                <li class="page-item"><a class="page-link"
+                                         th:href="@{?searchType={searchType}&keyword={keyword}(page=${pageNumber},searchType=${searchType},keyword=${keyword})}"
+                                         th:text="${pageNumber+1}">1</a></li>
+
+            </th:block>
+            <li class="page-item" th:classappend="${searchList.number + 1} == ${searchList.totalPages}? 'disabled'">
+                <a class="page-link"
+                   th:href="@{?searchType={searchType}&keyword={keyword}(page=${searchList.number + 1},searchType=${searchType},keyword=${keyword})}">
+                    Next
+                </a>
+            </li>
+        </ul>
+    </nav>
 
     <form th:action="@{search}" method="get" role="search">
         <select name="searchType">
@@ -45,6 +67,7 @@
         <input type="text" name="keyword" id="search">
         <button type="submit" id="searchBtn">검색</button>
     </form>
+
 
 </div>
 </body>
